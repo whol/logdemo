@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!-- 修改一下路径-->
+    <property name="PATH" value="d:/111"></property>
+    <!--输出日志格式-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </layout>
+    </appender>
+    <!--只保存debug日志-->
+    <appender name="fileDebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动输出策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${PATH}/debug/debug.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--只保存info日志-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动输出策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${PATH}/info/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--只保存warn日志-->
+    <appender name="fileWarnLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动输出策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${PATH}/warn/warn.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--只保存error日志-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动输出策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${PATH}/error/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!--只保存error日志-->
+    <appender name="fileErrorMarkerLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator> <!-- 默认为 ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
+                <expression>return marker!=null &amp;&amp; marker.contains("aaa");</expression>
+                <!--<expression>return message.contains("哈哈");</expression>-->
+            </evaluator>
+            <OnMatch>ACCEPT</OnMatch>
+            <OnMismatch>DENY</OnMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                [%date] [%-5level] [%logger:%line]--%mdc{client} %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动输出策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${PATH}/error/errorMarker.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileDebugLog"/>
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileWarnLog"/>
+        <appender-ref ref="fileErrorLog"/>
+        <appender-ref ref="fileErrorMarkerLog"/>
+    </root>
+
+</configuration>
